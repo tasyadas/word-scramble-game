@@ -12,6 +12,7 @@ class RegisterController extends Controller
 {
     /**
      * @param Request $request
+     *
      * @return array
      */
     public function __invoke(Request $request)

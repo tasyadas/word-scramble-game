@@ -25,3 +25,18 @@ Route::namespace('App\Http\Controllers\Auth')->group(function () {
         Route::post('logout', 'LogoutController');
     });
 });
+
+Route::group(['middleware' => 'auth:api', 'prefix' => 'word'], function () {
+    Route::namespace('App\Http\Controllers\Word')->group(function () {
+        Route::get('show-question', 'ShowQuestionController');
+        Route::post('answer-question', 'AnswerQuestionController');
+    });
+});
+
+Route::group(['middleware' => 'auth:api', 'prefix' => 'history'], function () {
+    Route::namespace('App\Http\Controllers\History')->group(function () {
+        Route::get('/', 'HistoryController');
+    });
+});
+
+
