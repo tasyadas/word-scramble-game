@@ -37,28 +37,6 @@
             </div>
         </form>
     </section>
-    <section id="hide">
-        <table id="example" class="table-sm table-striped table-bordered thead-light" style="width:60%">
-            <thead>
-            <tr>
-                <th>No.</th>
-                <th>Name</th>
-                <th>Word</th>
-                <th>Result</th>
-            </tr>
-            </thead>
-            <tbody id="dataTable">
-            </tbody>
-            <tfoot>
-            <tr>
-                <th>No.</th>
-                <th>Name</th>
-                <th>Word</th>
-                <th>Result</th>
-            </tr>
-            </tfoot>
-        </table>
-    </section>
 </div>
 
 <!-- Bootstrap core JavaScript -->
