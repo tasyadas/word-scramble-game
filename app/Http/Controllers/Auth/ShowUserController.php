@@ -14,6 +14,9 @@ class ShowUserController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return $request->user();
+        $user =  $request->user();
+        $user['role'] = $user->role;
+
+        return $user;
     }
 }

@@ -16,35 +16,23 @@
             <img src="{{asset('minion.png')}}" alt="image user">
             <p id="user-name"></p>
         </div>
-        <div class="score">
-            <p id="user-score">SCORE: </p>
-        </div>
         <div class="menu">
             <button type="submit" id="logout">LOGOUT</button>
         </div>
     </header>
     <section class="section1">
         <div>
-            <p>Scrambled Word :</p>
+            <p>Player History :</p>
         </div>
-        <div class="word-rounded">
-        </div>
-        <form id="answered" method="post">
-            <input type="text" id="jawaban" name="answer" class="form-control" autocomplete="off">
-            <input type="hidden" name="word_id" id="word_id">
-            <div class="action">
-                <button type="submit">Submit</button>
-            </div>
-        </form>
     </section>
-    <section id="hide">
+    <section>
         <table id="example" class="table-sm table-striped table-bordered thead-light" style="width:60%">
             <thead>
             <tr>
                 <th>No.</th>
                 <th>Name</th>
-                <th>Word</th>
-                <th>Result</th>
+                <th>Email</th>
+                <th>Score</th>
             </tr>
             </thead>
             <tbody id="dataTable">
@@ -53,8 +41,8 @@
             <tr>
                 <th>No.</th>
                 <th>Name</th>
-                <th>Word</th>
-                <th>Result</th>
+                <th>Email</th>
+                <th>Score</th>
             </tr>
             </tfoot>
         </table>
@@ -75,13 +63,13 @@
 <!-- Ajax for regist new user -->
 <script>
     const cookieValue = document.cookie
-                        .split('; ')
-                        .find(row => row.startsWith('cookie'))
-                        .split('=')[1];
+        .split('; ')
+        .find(row => row.startsWith('cookie'))
+        .split('=')[1];
 
     $(document).ready(function() {
         user();
-        fetchSoal();
+        scoreTable();
         $('#logout').click(function(e) {
             e.preventDefault();
             $.ajaxSetup({
@@ -93,34 +81,7 @@
             logout();
         });
 
-        $('#answered').submit(function(e) {
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content'),
-                    "Authorization": 'Bearer ' + cookieValue
-                }
-            });
-            answer();
-        });
-
     });
-
-    function answer() {
-        $.ajax({
-            url: "{{env('MIX_APP_URL')}}/api/word/answer-question",
-            method: "POST",
-            data: $('#answered').serialize(),
-            dataType: "json",
-            success: function(result) {
-                if( parseInt(result) !== undefined ) {
-                    $("#jawaban").val('');
-                    fetchSoal();
-                    user()
-                }
-            }
-        });
-    }
 
     function user() {
         $.ajax({
@@ -129,32 +90,30 @@
             // Fetch the stored token from localStorage and set in the header
             headers: {"Authorization": 'Bearer ' + cookieValue}
         }).then((result) => {
-            $('#user-name').text(result.name);
-            $('#user-score').text(`SCORE: ${result.score}`);
+            $('#user-name').text(`Admin ${result.name}`);
         });
     }
 
-    function fetchSoal() {
+    function scoreTable() {
         $.ajax({
-            url: "{{ env('MIX_APP_URL') }}/api/word/show-question",
+            url: "{{ env('MIX_APP_URL') }}/api/history",
             type: 'GET',
             // Fetch the stored token from localStorage and set in the header
             headers: {"Authorization": 'Bearer ' + cookieValue}
         }).then((result) => {
-            let soal = result.question
-            let splittedSoal = soal.toUpperCase().split('')
             let long = 0
-            $('.word-rounded').empty();
-
-            while (long < splittedSoal.length) {
-                let now = splittedSoal[long]
-                $('.word-rounded').append(
-                    $(`<div class="word1"><p>${now}</p></div>`)
+            while (long < result.length) {
+                let now = result[long]
+                $('#dataTable').append(
+                    $(`<tr>
+                        <td>${long+1}</td>
+                        <td>${now.name}</td>
+                        <td>${now.email}</td>
+                        <td>${now.score}</td>
+                      </tr>`)
                 );
                 long++
             }
-
-            $('#word_id').val(result.word_id);
         });
     }
 

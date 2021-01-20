@@ -119,12 +119,31 @@
             success: function(pesan) {
                 if( parseInt(pesan.token) !== undefined) {
                     document.cookie = `cookie=${pesan.token}`
-                    window.location.href = "{{ url('/home') }}"
+                    const cookieValue = document.cookie
+                        .split('; ')
+                        .find(row => row.startsWith('cookie'))
+                        .split('=')[1];
+                    checkRedirect(cookieValue);
                 }
                 else {
                     gagal(1,pesan.teks);
                 }
                 visible('loading_daftar',0);
+            }
+        });
+    }
+
+    function checkRedirect(token) {
+        $.ajax({
+            url: "{{ env('MIX_APP_URL') }}/api/user",
+            type: 'GET',
+            // Fetch the stored token from localStorage and set in the header
+            headers: {"Authorization": 'Bearer ' + token}
+        }).then((result) => {
+            if (result.role.name === 'admin') {
+                window.location.href = "{{ url('/admin') }}"
+            } else {
+                window.location.href = "{{ url('/home') }}"
             }
         });
     }
