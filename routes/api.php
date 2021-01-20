@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('pages:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
@@ -33,10 +33,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'word'], function () {
     });
 });
 
-Route::group(['middleware' => 'auth:api', 'prefix' => 'history'], function () {
-    Route::namespace('App\Http\Controllers\History')->group(function () {
-        Route::get('/', 'HistoryController');
-    });
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('history', \App\Http\Controllers\History\HistoryController::class);
+    Route::get('user', \App\Http\Controllers\Auth\ShowUserController::class);
 });
-
-
