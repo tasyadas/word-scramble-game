@@ -134,6 +134,7 @@
     }
 
     function checkRedirect(token) {
+        console.log(token)
         $.ajax({
             url: "{{ env('MIX_APP_URL') }}/api/user",
             type: 'GET',
