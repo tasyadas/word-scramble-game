@@ -33,6 +33,7 @@ class AnswerQuestionController extends Controller
 
         $user->words()->attach($word->id, ['is_correct' => $correct]);
         $user->save();
+        $user['result'] = $correct;
 
         return $user;
     }

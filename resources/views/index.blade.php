@@ -27,6 +27,9 @@
         <div>
             <p>Scrambled Word :</p>
         </div>
+        <div id="notification" style="display: none;">
+            <span class="dismiss"><a title="dismiss this notification">x</a></span>
+        </div>
         <div class="word-rounded">
         </div>
         <form id="answered" method="post">
@@ -91,10 +94,16 @@
             data: $('#answered').serialize(),
             dataType: "json",
             success: function(result) {
+                let message = '';
                 if( parseInt(result) !== undefined ) {
                     $("#jawaban").val('');
                     fetchSoal();
-                    user()
+                    user();
+                    message = result.result ? 'Correct!' : 'Wrong!';
+                    $("#notification").fadeIn("slow").text(message);
+                    setInterval(function(){
+                        $("#notification").fadeOut("slow")
+                    }, 900);
                 }
             }
         });
