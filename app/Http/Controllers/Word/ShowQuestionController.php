@@ -41,7 +41,7 @@ class ShowQuestionController extends Controller
      */
     private function generate()
     {
-        $pspell_link = pspell_new("en");
+        $pspell_link = pspell_new_config("en");
         $kata = $this->readableRandomString();
 
         if (!pspell_check($pspell_link, $kata)) {
