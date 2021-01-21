@@ -26,9 +26,9 @@ class ShowQuestionController extends Controller
             }
         }
         else {
-            $word = Word::inRandomOrder()->first();
+            $kata = $this->generate();
+            $word = Word::create(['word' => $kata]);
         }
-        dd($word);
 
         return [
             'word_id'  => $word->id,
