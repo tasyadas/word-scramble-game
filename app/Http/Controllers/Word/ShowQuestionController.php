@@ -28,6 +28,7 @@ class ShowQuestionController extends Controller
         else {
             $word = Word::inRandomOrder()->first();
         }
+        dd($word);
 
         return [
             'word_id'  => $word->id,
